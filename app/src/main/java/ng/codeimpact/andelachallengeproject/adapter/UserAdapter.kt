@@ -56,12 +56,6 @@ class UserAdapter(private val userList: List<User>) : RecyclerView.Adapter<UserA
         Glide.with(context).load(user.avatarUrl).into(holder.user_profile_avatar)
 
 
-        holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, UserDetails::class.java)
-            intent.putExtra("user", user)
-            context.startActivity(intent)
-        }
 
 
     }

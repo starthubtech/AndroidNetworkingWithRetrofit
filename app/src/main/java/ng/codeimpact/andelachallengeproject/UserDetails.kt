@@ -63,14 +63,11 @@ class UserDetails : AppCompatActivity() {
         user_github_url = findViewById<View>(R.id.github_profile_url) as TextView
 
         //getting intent extra
-        val user = intent.getParcelableExtra<User>("user")
 
 
-        user_name_details!!.text = getString(R.string.user_name_full, user.login)
-        user_github_url!!.text = getString(R.string.user_url_full, user.htmlUrl)
 
         //loading imageurl with Glide
-        Glide.with(applicationContext).load(user.avatarUrl).into(user_avatar!!)
+        //Glide.with(applicationContext).load(user.avatarUrl).into(user_avatar!!)
 
         val movementMethod = BetterLinkMovementMethod.linkify(Linkify.WEB_URLS, user_github_url!!)
         movementMethod.setOnLinkClickListener { textView, url ->
@@ -81,12 +78,12 @@ class UserDetails : AppCompatActivity() {
 
     private fun shareProfile() {
 
-        val user = intent.getParcelableExtra<User>("user")
+       // val user = intent.getParcelableExtra<User>("user")
 
 
-        val message = "Check out this awesome developer @" + user.login + ", " + user.url
+        //val message = "Check out this awesome developer @" + user.login + ", " + user.url
 
-        ShareUtils.shareCustom(message, this)
+       // ShareUtils.shareCustom(message, this)
 
     }
 }
