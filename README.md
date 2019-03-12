@@ -7,7 +7,7 @@ Android app to retrieve a list of Java Developers in Lagos using the Github API
 
 You can clone this project to your local machine.
 ```
-git clone url
+git clone https://github.com/starthubtech/AndroidNetworkingWithRetrofit.git
 
 ```
 
