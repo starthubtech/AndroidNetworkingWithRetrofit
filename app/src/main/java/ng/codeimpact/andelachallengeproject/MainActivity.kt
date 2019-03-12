@@ -1,27 +1,22 @@
 package ng.codeimpact.andelachallengeproject
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.GridLayoutAnimationController
 import android.widget.Toast
 
 import ng.codeimpact.andelachallengeproject.adapter.UserAdapter
-import ng.codeimpact.andelachallengeproject.model.UserList
+import ng.codeimpact.andelachallengeproject.model.UserResponse
 import ng.codeimpact.andelachallengeproject.service.RestApiBuilder
 import ng.codeimpact.andelachallengeproject.service.RestApiService
 import retrofit2.Call
@@ -34,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private var recyclerView: RecyclerView? = null
     private var adapter: UserAdapter? = null
     private var coordinatorLayout: CoordinatorLayout? = null
+    lateinit var pd: ProgressDialog
 
     private val isNetworkAvailable: Boolean
         get() {
@@ -50,6 +46,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        pd = ProgressDialog(this).apply {
+            setMessage("Fetching Users")
+            setCancelable(false)
+        }
         val fab = findViewById<View>(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -62,11 +62,15 @@ class MainActivity : AppCompatActivity() {
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager = layoutManager
 
+        if(isNetworkAvailable){
+            fetchUsersData()
+        }
+
 
     }
 
-    private fun prepareData(userList: UserList) {
-        adapter = UserAdapter(userList.items)
+    private fun prepareData(userResponse: UserResponse) {
+        adapter = UserAdapter(userResponse.items!!)
         recyclerView!!.adapter = adapter
 
     }
@@ -74,7 +78,26 @@ class MainActivity : AppCompatActivity() {
 
     //TODO("Call the API service to fetch the users data 9 ")
     private fun fetchUsersData() {
-        val searchParams = "language:java location:lagos"
+        pd.showProgress()
+        val searchParams = "language:java location:uyo"
+        val apiService = RestApiBuilder().RestApiService()
+        apiService.getUsers(searchParams).enqueue(object : Callback<UserResponse> {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                pd.hideProgress()
+                val toast = Toast(this@MainActivity).apply {
+                    setText("Request Failed " + t.message)
+                    duration = Toast.LENGTH_SHORT
+                    show()
+                }
+            }
+
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                pd.hideProgress()
+                val users = response.body()
+                prepareData(users!!)
+            }
+
+        })
 
     }
 
