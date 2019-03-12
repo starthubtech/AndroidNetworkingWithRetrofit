@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User implements Parcelable {
 
+    //TODO("Create POJO for the response object 6")
     @SerializedName("login")
     @Expose
     private String login;

@@ -9,18 +9,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestApiBuilder {
 
+   // TODO("Add Base Url 3")
     public static final String BASE_URL = "https://api.github.com";
 
     private Retrofit retrofit;
 
+    // TODO("Create RestApiBuilder 4")
     public RestApiBuilder() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+
     }
 
+    // TODO("Create API service 5")
     public RestApiService getService() {
-        return retrofit.create(RestApiService.class);
+
+        return null ;
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class UserList {
 
+    //TODO("Create POJO for the full JSON response 8")
     @SerializedName("items")
     @Expose
     private List<User> items = null;
